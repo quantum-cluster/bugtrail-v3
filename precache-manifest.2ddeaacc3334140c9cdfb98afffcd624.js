@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "34d789384bccded9408d974a5ab6dca4",
+    "revision": "86ea532de61f14cb12d4e4a44687fd70",
     "url": "/bugtrail-v3/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bugtrail-v3/static/css/2.d9ad5f5c.chunk.css"
   },
   {
-    "revision": "ba60be8f0528909c1bd0",
+    "revision": "9e4ac5dfc9638a1d4212",
     "url": "/bugtrail-v3/static/css/main.f58bcd78.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ba60be8f0528909c1bd0",
-    "url": "/bugtrail-v3/static/js/main.c0f72247.chunk.js"
+    "revision": "9e4ac5dfc9638a1d4212",
+    "url": "/bugtrail-v3/static/js/main.3ddb5f78.chunk.js"
   },
   {
     "revision": "114353419efe9e3548bf",
