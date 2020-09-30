@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/bugtrail-v3/static/css/main.f58bcd78.chunk.css",
+    "main.js": "/bugtrail-v3/static/js/main.c0f72247.chunk.js",
+    "main.js.map": "/bugtrail-v3/static/js/main.c0f72247.chunk.js.map",
+    "runtime-main.js": "/bugtrail-v3/static/js/runtime-main.6f2129a0.js",
+    "runtime-main.js.map": "/bugtrail-v3/static/js/runtime-main.6f2129a0.js.map",
+    "static/css/2.d9ad5f5c.chunk.css": "/bugtrail-v3/static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.e5aa2503.chunk.js": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js",
+    "static/js/2.e5aa2503.chunk.js.map": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js.map",
+    "index.html": "/bugtrail-v3/index.html",
+    "precache-manifest.33bffab9683097dfc7f5e6ab8fd03646.js": "/bugtrail-v3/precache-manifest.33bffab9683097dfc7f5e6ab8fd03646.js",
+    "service-worker.js": "/bugtrail-v3/service-worker.js",
+    "static/css/2.d9ad5f5c.chunk.css.map": "/bugtrail-v3/static/css/2.d9ad5f5c.chunk.css.map",
+    "static/css/main.f58bcd78.chunk.css.map": "/bugtrail-v3/static/css/main.f58bcd78.chunk.css.map",
+    "static/js/2.e5aa2503.chunk.js.LICENSE.txt": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6f2129a0.js",
+    "static/css/2.d9ad5f5c.chunk.css",
+    "static/js/2.e5aa2503.chunk.js",
+    "static/css/main.f58bcd78.chunk.css",
+    "static/js/main.c0f72247.chunk.js"
+  ]
+}
