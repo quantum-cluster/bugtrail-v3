@@ -275,7 +275,7 @@ const ViewTickets = () => {
                 <td>
                   <Link
                     className={"text-white"}
-                    to={`/bugtrail-v2/ticket-details/${ticket.id}`}
+                    to={`/bugtrail-v3/ticket-details/${ticket.id}`}
                   >
                     {ticket.title}
                   </Link>

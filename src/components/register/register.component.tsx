@@ -60,7 +60,7 @@ const Register = () => {
         password: "",
         confirmPassword: "",
       });
-      history.push("/bugtrail-v2");
+      history.push("/bugtrail-v3");
     } catch (error) {
       console.error("Error creating user: ", error);
     }

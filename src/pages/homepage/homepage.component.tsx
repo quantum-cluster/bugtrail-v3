@@ -22,44 +22,44 @@ const Homepage = () => {
                 <div className="card border-dark">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v2/new-defect"}>
+                      <Link to={"/bugtrail-v3/new-defect"}>
                         Raise A New Defect
                       </Link>
                     </li>
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v2/view-tickets?type=my"}>
+                      <Link to={"/bugtrail-v3/view-tickets?type=my"}>
                         My Tickets
                       </Link>
                     </li>
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v2/view-tickets?type=all"}>
+                      <Link to={"/bugtrail-v3/view-tickets?type=all"}>
                         All Tickets
                       </Link>
                     </li>
                     <li className="list-group-item">
                       <Link
-                        to={"/bugtrail-v2/view-tickets?type=assigned-to-me"}
+                        to={"/bugtrail-v3/view-tickets?type=assigned-to-me"}
                       >
                         Tickets Assigned To Me
                       </Link>
                     </li>
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v2/view-tickets?type=unassigned"}>
+                        <Link to={"/bugtrail-v3/view-tickets?type=unassigned"}>
                           Unassigned Tickets
                         </Link>
                       </li>
                     ) : null}
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v2/view-tickets?type=fixed"}>
+                        <Link to={"/bugtrail-v3/view-tickets?type=fixed"}>
                           Fixed Tickets
                         </Link>
                       </li>
                     ) : null}
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v2/view-tickets?type=failed"}>
+                        <Link to={"/bugtrail-v3/view-tickets?type=failed"}>
                           Failed Tickets
                         </Link>
                       </li>

@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <div className={"bootstrap-navbar"}>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <Link to={"/bugtrail-v2"} className={"navbar-brand"}>
+        <Link to={"/bugtrail-v3"} className={"navbar-brand"}>
           BUGTRAIL
         </Link>
         <button
@@ -34,23 +34,23 @@ const Navbar = () => {
           <ul className="navbar-nav">
             <li
               className={`nav-item ${
-                history.location.pathname === "/bugtrail-v2" ? "active" : ""
+                history.location.pathname === "/bugtrail-v3" ? "active" : ""
               }`}
             >
-              <Link to={"/bugtrail-v2"} className={"nav-link"}>
+              <Link to={"/bugtrail-v3"} className={"nav-link"}>
                 Home <span className="sr-only">(current)</span>
               </Link>
             </li>
             <li
               className={`nav-item ${
-                history.location.pathname === "/bugtrail-v2/register-and-login"
+                history.location.pathname === "/bugtrail-v3/register-and-login"
                   ? "active"
                   : ""
               }`}
             >
               {!currentUser.email && (
                 <Link
-                  to={"/bugtrail-v2/register-and-login"}
+                  to={"/bugtrail-v3/register-and-login"}
                   className={"nav-link"}
                 >
                   Login and Register
@@ -64,7 +64,7 @@ const Navbar = () => {
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     auth.signOut();
-                    history.push("/bugtrail-v2/register-and-login");
+                    history.push("/bugtrail-v3/register-and-login");
                     refreshComponent();
                   }}
                 >

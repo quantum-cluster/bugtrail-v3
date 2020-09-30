@@ -47,21 +47,21 @@ const Routes = () => {
         <BrowserRouter>
           <Navbar />
           <Switch>
-            <Route exact path={"/bugtrail-v2"} component={Homepage} />
+            <Route exact path={"/bugtrail-v3"} component={Homepage} />
             <Route
               exact
-              path={"/bugtrail-v2/register-and-login"}
+              path={"/bugtrail-v3/register-and-login"}
               component={RegisterAndLogin}
             />
             <Route
               exact
-              path={"/bugtrail-v2/new-defect"}
+              path={"/bugtrail-v3/new-defect"}
               component={DefectForm}
             />
-            <Route path={"/bugtrail-v2/view-tickets"} component={ViewTickets} />
+            <Route path={"/bugtrail-v3/view-tickets"} component={ViewTickets} />
             <Route
               exact
-              path={"/bugtrail-v2/ticket-details/:ticketId"}
+              path={"/bugtrail-v3/ticket-details/:ticketId"}
               component={TicketDetailsPage}
             />
           </Switch>
