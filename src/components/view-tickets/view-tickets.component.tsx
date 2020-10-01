@@ -18,8 +18,6 @@ const ViewTickets = () => {
   const currentUser: CurrentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
-    console.log("Running useEffect");
-
     setTicketsList([]);
     switch (type) {
       case "all":
@@ -28,7 +26,6 @@ const ViewTickets = () => {
           .get()
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
-              console.log("Document data:", doc.data());
               const {
                 title,
                 description,
@@ -54,7 +51,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -65,7 +62,6 @@ const ViewTickets = () => {
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
               if (doc.data().owner.id === currentUser.id) {
-                console.log("Document data:", doc.data());
                 const {
                   title,
                   description,
@@ -92,7 +88,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -106,7 +102,6 @@ const ViewTickets = () => {
                 doc.data().status !== "fixed" &&
                 doc.data().assignee.id === currentUser.id
               ) {
-                console.log("Document data:", doc.data());
                 const {
                   title,
                   description,
@@ -133,7 +128,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -144,7 +139,6 @@ const ViewTickets = () => {
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "unassigned") {
-                console.log("Document data:", doc.data());
                 const {
                   title,
                   description,
@@ -171,7 +165,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -182,7 +176,6 @@ const ViewTickets = () => {
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "fixed") {
-                console.log("Document data:", doc.data());
                 const {
                   title,
                   description,
@@ -209,7 +202,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -220,7 +213,6 @@ const ViewTickets = () => {
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "failed") {
-                console.log("Document data:", doc.data());
                 const {
                   title,
                   description,
@@ -247,7 +239,7 @@ const ViewTickets = () => {
             });
           })
           .catch((error: firestore.FirestoreError) => {
-            console.log("Error getting document:", error);
+            console.error("Error getting document:", error);
           });
         break;
 
@@ -260,7 +252,7 @@ const ViewTickets = () => {
     <div className="p-5">
       <h2 className={"text-center"}>View Tickets Here</h2>
       {ticketsList.length > 0 ? (
-        <table className="table table-bordered table-striped table-dark">
+        <table className="table table-bordered table-striped table-dark mb-5">
           <thead>
             <tr>
               <th scope="col">S.No.</th>

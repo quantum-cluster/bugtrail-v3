@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   return (
-    <div className={"text-center"}>
+    <div className={"text-center mb-5"}>
       <form className="form-signin" onSubmit={handleSubmit}>
         <img
           className="mb-4"
@@ -85,7 +85,7 @@ const Login = () => {
             <input type="checkbox" value="remember-me" /> Remember me
           </label>
         </div>
-        <button className="btn btn-lg btn-primary btn-block" type="submit">
+        <button className="btn btn-lg btn-dark btn-block" type="submit">
           Login
         </button>
       </form>

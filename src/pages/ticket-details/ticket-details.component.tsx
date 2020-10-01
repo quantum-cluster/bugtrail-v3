@@ -50,7 +50,6 @@ const TicketDetailsPage = () => {
       .get()
       .then(function (doc: firestore.DocumentData) {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
           const {
             title,
             description,
@@ -80,14 +79,13 @@ const TicketDetailsPage = () => {
         }
       })
       .catch(function (error: firestore.FirestoreError) {
-        console.log("Error getting document:", error);
+        console.error("Error getting document:", error);
       });
 
     db.collection("users")
       .get()
       .then((querySnapshot: firestore.QuerySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log("doc: ", doc);
           setUsersList((prevState) => [
             ...prevState,
             {

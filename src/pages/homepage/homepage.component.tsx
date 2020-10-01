@@ -14,30 +14,40 @@ const Homepage = () => {
   return (
     <div className={"pt-3 pr-5 pl-5"}>
       {currentUser.email ? (
-        <div className="card border-dark">
+        <div className="card border-dark mb-5">
           <h5 className="card-header text-white bg-dark">User Dashboard</h5>
           <div className="card-body">
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-3 mb-5">
                 <div className="card border-dark">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v3/new-defect"}>
+                      <Link
+                        className={"link-font"}
+                        to={"/bugtrail-v3/new-defect"}
+                      >
                         Raise A New Defect
                       </Link>
                     </li>
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v3/view-tickets?type=my"}>
+                      <Link
+                        className={"link-font"}
+                        to={"/bugtrail-v3/view-tickets?type=my"}
+                      >
                         My Tickets
                       </Link>
                     </li>
                     <li className="list-group-item">
-                      <Link to={"/bugtrail-v3/view-tickets?type=all"}>
+                      <Link
+                        className={"link-font"}
+                        to={"/bugtrail-v3/view-tickets?type=all"}
+                      >
                         All Tickets
                       </Link>
                     </li>
                     <li className="list-group-item">
                       <Link
+                        className={"link-font"}
                         to={"/bugtrail-v3/view-tickets?type=assigned-to-me"}
                       >
                         Tickets Assigned To Me
@@ -45,21 +55,30 @@ const Homepage = () => {
                     </li>
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v3/view-tickets?type=unassigned"}>
+                        <Link
+                          className={"link-font"}
+                          to={"/bugtrail-v3/view-tickets?type=unassigned"}
+                        >
                           Unassigned Tickets
                         </Link>
                       </li>
                     ) : null}
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v3/view-tickets?type=fixed"}>
+                        <Link
+                          className={"link-font"}
+                          to={"/bugtrail-v3/view-tickets?type=fixed"}
+                        >
                           Fixed Tickets
                         </Link>
                       </li>
                     ) : null}
                     {currentUser.role === "triage" ? (
                       <li className="list-group-item">
-                        <Link to={"/bugtrail-v3/view-tickets?type=failed"}>
+                        <Link
+                          className={"link-font"}
+                          to={"/bugtrail-v3/view-tickets?type=failed"}
+                        >
                           Failed Tickets
                         </Link>
                       </li>
@@ -68,9 +87,11 @@ const Homepage = () => {
                 </div>
               </div>
 
-              <div className="col-md-9">
+              <div className="col-md-9 mb-5">
                 <div className="card border-dark">
-                  <h5 className="card-header text-white bg-dark">{currentUser.displayName}</h5>
+                  <h5 className="card-header text-white bg-dark">
+                    {currentUser.displayName}
+                  </h5>
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                       <span className="badge badge-dark badge-pill">
@@ -99,7 +120,7 @@ const Homepage = () => {
           </div>
         </div>
       ) : (
-        <h2>
+        <h2 className={"text-center"}>
           Welcome to Bugtrail. A bug tracking software. Please register or login
           to continue.
         </h2>

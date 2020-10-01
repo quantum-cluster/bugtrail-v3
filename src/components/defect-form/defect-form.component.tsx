@@ -143,7 +143,7 @@ const DefectForm = () => {
   return (
     <div className={"p-5"}>
       <h1 className={"text-center"}>Raising a new defect</h1>
-      <form onSubmit={handleSubmit}>
+      <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="defectTitle">Title</label>
           <input
