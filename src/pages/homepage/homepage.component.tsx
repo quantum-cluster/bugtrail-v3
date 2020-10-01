@@ -12,9 +12,9 @@ const Homepage = () => {
   }, [currentUser]);
 
   return (
-    <div className={"pt-3 pr-5 pl-5"}>
+    <div className={"pt-3 pb-3 mt-5"}>
       {currentUser.email ? (
-        <div className="card border-dark mb-5">
+        <div className="card border-dark m-5">
           <h5 className="card-header text-white bg-dark">User Dashboard</h5>
           <div className="card-body">
             <div className="row">

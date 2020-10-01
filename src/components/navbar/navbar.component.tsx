@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <div className={"bootstrap-navbar"}>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <Link to={"/bugtrail-v3"} className={"navbar-brand"}>
           BUGTRAIL
         </Link>
