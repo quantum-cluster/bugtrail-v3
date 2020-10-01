@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/bugtrail-v3/static/css/main.f58bcd78.chunk.css",
-    "main.js": "/bugtrail-v3/static/js/main.3ddb5f78.chunk.js",
-    "main.js.map": "/bugtrail-v3/static/js/main.3ddb5f78.chunk.js.map",
+    "main.js": "/bugtrail-v3/static/js/main.b5c7780f.chunk.js",
+    "main.js.map": "/bugtrail-v3/static/js/main.b5c7780f.chunk.js.map",
     "runtime-main.js": "/bugtrail-v3/static/js/runtime-main.6f2129a0.js",
     "runtime-main.js.map": "/bugtrail-v3/static/js/runtime-main.6f2129a0.js.map",
     "static/css/2.d9ad5f5c.chunk.css": "/bugtrail-v3/static/css/2.d9ad5f5c.chunk.css",
     "static/js/2.e5aa2503.chunk.js": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js",
     "static/js/2.e5aa2503.chunk.js.map": "/bugtrail-v3/static/js/2.e5aa2503.chunk.js.map",
     "index.html": "/bugtrail-v3/index.html",
-    "precache-manifest.a2c50be3e5c892602fc0cec73b478b23.js": "/bugtrail-v3/precache-manifest.a2c50be3e5c892602fc0cec73b478b23.js",
+    "precache-manifest.b79ad5ac0296230cc425d381f5a87e45.js": "/bugtrail-v3/precache-manifest.b79ad5ac0296230cc425d381f5a87e45.js",
     "service-worker.js": "/bugtrail-v3/service-worker.js",
     "static/css/2.d9ad5f5c.chunk.css.map": "/bugtrail-v3/static/css/2.d9ad5f5c.chunk.css.map",
     "static/css/main.f58bcd78.chunk.css.map": "/bugtrail-v3/static/css/main.f58bcd78.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.d9ad5f5c.chunk.css",
     "static/js/2.e5aa2503.chunk.js",
     "static/css/main.f58bcd78.chunk.css",
-    "static/js/main.3ddb5f78.chunk.js"
+    "static/js/main.b5c7780f.chunk.js"
   ]
 }
