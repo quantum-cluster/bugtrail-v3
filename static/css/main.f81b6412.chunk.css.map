@@ -1,0 +1,1 @@
+{"version":3,"sources":["homepage.styles.scss"],"names":[],"mappings":"AAAA,WACI,UAAY,CADhB,iBAIQ,UAAY,CACZ,oBAAqB","file":"main.f81b6412.chunk.css","sourcesContent":[".link-font {\r\n    color: black;\r\n    \r\n    &:hover {\r\n        color: black;\r\n        text-decoration: none;\r\n    }\r\n}"]}

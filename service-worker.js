@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/bugtrail-v3/precache-manifest.b79ad5ac0296230cc425d381f5a87e45.js"
+  "/bugtrail-v3/precache-manifest.4d96c099a61ccfd8267478768d4ada3c.js"
 );
 
 self.addEventListener('message', (event) => {
