@@ -14,7 +14,6 @@ const RegisterAndLogin = () => {
           <Register />
         </div>
       </div>
-      <p className="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
     </div>
   );
 };

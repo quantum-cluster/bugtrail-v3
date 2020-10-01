@@ -64,7 +64,7 @@ const Navbar = () => {
                   style={{ cursor: "pointer" }}
                   onClick={() => {
                     auth.signOut();
-                    history.push("/bugtrail-v3/register-and-login");
+                    history.push("/bugtrail-v3");
                     refreshComponent();
                   }}
                 >
