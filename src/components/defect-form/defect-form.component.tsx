@@ -141,7 +141,7 @@ const DefectForm = () => {
   };
 
   return (
-    <div className={"pt-3 pl-2 pr-2 mt-5"}>
+    <div className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"}>
       <h1 className={"text-center"}>Raising a new defect</h1>
       <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">

@@ -167,7 +167,7 @@ const TicketDetailsPage = () => {
   };
 
   return (
-    <div className={"pt-3 mt-5"}>
+    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}>
       <h2 className={"text-center"}>Ticket Details Page</h2>
       <div className="card border-dark mb-5">
         <ul className="list-group">
