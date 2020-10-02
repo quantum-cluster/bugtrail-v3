@@ -249,7 +249,7 @@ const ViewTickets = () => {
   }, [type, currentUser]);
 
   return (
-    <div className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3">
+    <div className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5">
       <h2 className={"text-center"}>View Tickets Here</h2>
       {ticketsList.length > 0 ? (
         <table className="table table-bordered table-striped table-dark mb-5">
