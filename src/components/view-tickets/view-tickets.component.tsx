@@ -13,6 +13,7 @@ const useQuery = () => {
 const ViewTickets = () => {
   let query = useQuery();
   let type = query.get("type");
+  let projectId = query.get("projectId");
   const [ticketsList, setTicketsList] = useState<Array<Ticket>>([]);
 
   const currentUser: CurrentUser = useContext(CurrentUserContext);

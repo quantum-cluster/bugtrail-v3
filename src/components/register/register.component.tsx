@@ -12,7 +12,7 @@ const Register = () => {
   const [userCredentials, setUserCredentials] = useState<UserRegister>({
     fName: "Developer",
     lName: "Schwarz",
-    role: "developer",
+    role: "Developer",
     email: "developer@nikhil.com",
     password: "12345678",
     confirmPassword: "12345678",
@@ -27,7 +27,9 @@ const Register = () => {
     confirmPassword,
   } = userCredentials;
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
@@ -52,10 +54,13 @@ const Register = () => {
       await createUserProfileDocument(user, {
         displayName: `${fName} ${lName}`,
         role,
+        createdProjects: [""],
+        projects: [""],
       });
       setUserCredentials({
         fName: "",
         lName: "",
+        role: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -108,19 +113,19 @@ const Register = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="organizationRole" className="sr-only">
-            Organization Role
-          </label>
-          <input
-            type="text"
-            name="role"
-            id="organizationRole"
+          <select
             className="form-control"
-            placeholder="Organization Role"
+            name="role"
+            id="role"
             value={role}
             onChange={handleChange}
-            required
-          />
+          >
+            <option>--Select--</option>
+            <option>Admin</option>
+            <option>Developer</option>
+            <option>Triage</option>
+            <option>Tester</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="registerEmail" className="sr-only">

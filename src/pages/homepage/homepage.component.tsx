@@ -24,6 +24,24 @@ const Homepage = () => {
                     <li className="list-group-item">
                       <Link
                         className={"link-font"}
+                        to={"/bugtrail-v3/projects"}
+                      >
+                        {currentUser.role === "admin"
+                          ? "View All Projects"
+                          : "View My Projects"}
+                      </Link>
+                    </li>
+                    <li className="list-group-item">
+                      <Link
+                        className={"link-font"}
+                        to={"/bugtrail-v3/new-project"}
+                      >
+                        Create A New Project
+                      </Link>
+                    </li>
+                    <li className="list-group-item">
+                      <Link
+                        className={"link-font"}
                         to={"/bugtrail-v3/new-defect"}
                       >
                         Raise A New Defect
@@ -111,7 +129,7 @@ const Homepage = () => {
                       <span className="badge badge-dark badge-pill">
                         Role Assigned
                       </span>{" "}
-                      Tester
+                      {currentUser.role}
                     </li>
                   </ul>
                 </div>

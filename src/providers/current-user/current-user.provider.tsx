@@ -7,6 +7,7 @@ const CurrentUserContext = createContext<CurrentUser>({
   displayName: "",
   role: "",
   myTickets: [],
+  projects: [],
 });
 
 export default CurrentUserContext;

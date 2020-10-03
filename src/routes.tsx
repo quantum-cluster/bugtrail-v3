@@ -6,6 +6,9 @@ import Navbar from "./components/navbar/navbar.component";
 import ViewTickets from "./components/view-tickets/view-tickets.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import Homepage from "./pages/homepage/homepage.component";
+import ProjectForm from "./pages/project-form/project-form.component";
+import ProjectDetails from "./pages/projects-details/projects-details.component";
+import Projects from "./pages/projects/projects.component";
 import RegisterAndLogin from "./pages/register-and-login/register-and-login.component";
 import TicketDetailsPage from "./pages/ticket-details/ticket-details.component";
 import CurrentUserContext from "./providers/current-user/current-user.provider";
@@ -18,6 +21,7 @@ const Routes = () => {
     displayName: "",
     role: "",
     myTickets: [],
+    projects: [],
   });
 
   useEffect(() => {
@@ -32,6 +36,7 @@ const Routes = () => {
             displayName: snapShot.data()?.displayName,
             role: snapShot.data()?.role,
             myTickets: snapShot.data()?.myTickets,
+            projects: snapShot.data()?.projects,
           });
         });
       }
@@ -58,11 +63,22 @@ const Routes = () => {
               path={"/bugtrail-v3/new-defect"}
               component={DefectForm}
             />
+            <Route
+              exact
+              path={"/bugtrail-v3/new-project"}
+              component={ProjectForm}
+            />
             <Route path={"/bugtrail-v3/view-tickets"} component={ViewTickets} />
             <Route
               exact
               path={"/bugtrail-v3/ticket-details/:ticketId"}
               component={TicketDetailsPage}
+            />
+            <Route exact path={"/bugtrail-v3/projects"} component={Projects} />
+            <Route
+              exact
+              path={"/bugtrail-v3/project-details/:projectId"}
+              component={ProjectDetails}
             />
           </Switch>
         </BrowserRouter>

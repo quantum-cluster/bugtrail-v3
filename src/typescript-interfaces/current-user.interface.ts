@@ -4,4 +4,5 @@ export interface CurrentUser {
   displayName: string;
   role: string;
   myTickets: Array<string>;
+  projects: Array<string>;
 }
