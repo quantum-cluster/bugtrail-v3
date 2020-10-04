@@ -20,6 +20,12 @@ const ProjectDetails = () => {
   const [nonMembers, setNonMembers] = useState<Array<Member>>([]);
   const [personToAdd, setPersonToAdd] = useState("");
 
+  const [priorityLow, setPriorityLow] = useState(0);
+  const [priorityMedium, setPriorityMedium] = useState(0);
+  const [priorityHigh, setPriorityHigh] = useState(0);
+  const [prioritySevere, setPrioritySevere] = useState(0);
+  const [priorityFeatureRequest, setPriorityFeatureRequest] = useState(0);
+
   useEffect(() => {
     db.collection("projects")
       .doc(projectId)
@@ -68,6 +74,43 @@ const ProjectDetails = () => {
                 ]);
               }
             });
+          });
+      })
+      .then(() => {
+        db.collection("tickets")
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc: firestore.DocumentData) => {
+              if (doc.data().project.projectId === projectId) {
+                switch (doc.data().priority) {
+                  case "Low":
+                    setPriorityLow((prevState) => prevState + 1);
+                    break;
+
+                  case "Medium":
+                    setPriorityMedium((prevState) => prevState + 1);
+                    break;
+
+                  case "High":
+                    setPriorityHigh((prevState) => prevState + 1);
+                    break;
+
+                  case "Severe":
+                    setPrioritySevere((prevState) => prevState + 1);
+                    break;
+
+                  case "Feature request":
+                    setPriorityFeatureRequest((prevState) => prevState + 1);
+                    break;
+
+                  default:
+                    break;
+                }
+              }
+            });
+          })
+          .catch((error) => {
+            console.error("Ticket priorities couldn't be fetched: ", error);
           });
       })
       .catch(function (error) {
@@ -120,12 +163,57 @@ const ProjectDetails = () => {
       });
   };
 
+  const handleRemoveMember = (memberId: string) => (event: React.FormEvent) => {
+    event.preventDefault();
+
+    let projectsArray: Array<string> = [];
+
+    db.collection("users")
+      .doc(memberId)
+      .get()
+      .then((doc: firestore.DocumentData) => {
+        if (doc.exists) {
+          projectsArray = doc.data().projects;
+
+          if (projectsArray && projectsArray.includes(projectId)) {
+            projectsArray.splice(projectsArray.indexOf(projectId), 1);
+          } else {
+            console.log("User isn't a part of this project!");
+          }
+        }
+      })
+      .then(() => {
+        console.log("Entered 2nd then block");
+
+        db.collection("users")
+          .doc(memberId)
+          .set(
+            {
+              projects: projectsArray,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("project removed successfully!");
+          })
+          .then(() => {
+            refreshComponent();
+          })
+          .catch((error) => {
+            console.error("couldn't remove project!", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Couldn't remove user from project: ", error);
+      });
+  };
+
   const refreshComponent = () => {
     window.location.reload();
   };
 
   return (
-    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}>
+    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
       <h2 className="text-center">Project Details Page</h2>
       <div className="card border-dark mb-3">
         <div className="card-header text-white bg-dark">
@@ -139,7 +227,7 @@ const ProjectDetails = () => {
                   <li className="list-group-item">
                     <Link
                       className={"text-decoration-none text-dark"}
-                      to={"/bugtrail-v3/new-defect"}
+                      to={`/bugtrail-v3/new-defect/${projectId}`}
                     >
                       Raise a new Defect
                     </Link>
@@ -147,7 +235,7 @@ const ProjectDetails = () => {
                   <li className="list-group-item">
                     <Link
                       className={"text-decoration-none text-dark"}
-                      to={`/bugtrail-v3/view-tickets/&projectId=${projectId}`}
+                      to={`/bugtrail-v3/view-tickets/?projectId=${projectId}&type=all`}
                     >
                       View all tickets for:-
                       <div
@@ -207,25 +295,25 @@ const ProjectDetails = () => {
                   </li>
                   <li className="list-group-item">
                     <span className="badge badge-pill badge-dark">Severe</span>{" "}
-                    None
+                    {prioritySevere}
                   </li>
                   <li className="list-group-item">
                     <span className="badge badge-pill badge-dark">High</span>{" "}
-                    None
+                    {priorityHigh}
                   </li>
                   <li className="list-group-item">
                     <span className="badge badge-pill badge-dark">Medium</span>{" "}
-                    None
+                    {priorityMedium}
                   </li>
                   <li className="list-group-item">
                     <span className="badge badge-pill badge-dark">Low</span>{" "}
-                    None
+                    {priorityLow}
                   </li>
                   <li className="list-group-item">
                     <span className="badge badge-pill badge-dark">
                       Feature Request
                     </span>{" "}
-                    None
+                    {priorityFeatureRequest}
                   </li>
                 </ul>
               </div>
@@ -250,6 +338,14 @@ const ProjectDetails = () => {
                 <td>{person.displayName}</td>
                 <td>{person.email}</td>
                 <td>{person.role}</td>
+                <td className={"text-center"}>
+                  <button
+                    className="btn btn-danger"
+                    onClick={handleRemoveMember(person.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
               </tr>
             );
           })}

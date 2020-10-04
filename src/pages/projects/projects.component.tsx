@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./projects.styles.scss";
 import { firestore } from "../../firebase/firebase.utils";
 import { Project } from "../../typescript-interfaces/project.interface";
 import { Link } from "react-router-dom";
+import CurrentUserContext from "../../providers/current-user/current-user.provider";
 
 const Projects = () => {
   const [projectsList, setProjectsList] = useState<Array<Project>>([]);
+
+  const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
     firestore
       .collection("projects")
       .get()
       .then((querySnapshot) => {
-        querySnapshot.forEach(function (doc) {
-          console.log(doc.id, " => ", doc.data());
-          setProjectsList((prevState) => [
-            ...prevState,
-            {
-              id: doc.id,
-              name: doc.data().name,
-              description: doc.data().description,
-              status: doc.data().status,
-            },
-          ]);
+        querySnapshot.forEach((doc) => {
+          if (currentUser.projects.includes(doc.id)) {
+            setProjectsList((prevState) => [
+              ...prevState,
+              {
+                id: doc.id,
+                name: doc.data().name,
+                description: doc.data().description,
+                status: doc.data().status,
+              },
+            ]);
+          }
         });
       });
-  }, []);
+  }, [currentUser.projects]);
 
   return (
-    <div className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}>
+    <div className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
       <h2 className={"text-center"}>PROJECTS PAGE</h2>
       <table className="table table-bordered table-striped table-dark mb-5">
         <thead>

@@ -1,17 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CurrentUserContext from "../../providers/current-user/current-user.provider";
 import { CurrentUser } from "../../typescript-interfaces/current-user.interface";
 import { v4 } from "uuid";
-import { firestore, storage } from "../../firebase/firebase.utils";
-import firebase from "firebase/app";
+import { firestore as db, storage } from "../../firebase/firebase.utils";
+import firebase, { firestore } from "firebase/app";
+import "./defect-form.styles.scss";
+import { useParams } from "react-router-dom";
 
 const DefectForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [defectImage, setDefectImage] = useState<File>();
   const [priority, setPriority] = useState("");
+  const [projectName, setProjectName] = useState("");
+
+  const { projectId } = useParams<{ projectId: string }>();
 
   const currentUser: CurrentUser = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    db.collection("projects")
+      .doc(projectId)
+      .get()
+      .then((doc: firestore.DocumentData) => {
+        setProjectName(doc.data().name);
+      })
+      .catch((error) => {
+        console.error("Couldn't fetch project name: ", error);
+      });
+  }, [projectId]);
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -92,14 +109,17 @@ const DefectForm = () => {
               imageUrl = downloadURL;
             })
             .then(() => {
-              firestore
-                .collection("tickets")
+              db.collection("tickets")
                 .doc(uid)
                 .set({
                   owner: {
                     id: currentUser.id,
                     displayName: currentUser.displayName,
                     email: currentUser.email,
+                  },
+                  project: {
+                    projectId,
+                    projectName,
                   },
                   title,
                   description,
@@ -129,8 +149,7 @@ const DefectForm = () => {
       );
     }
 
-    firestore
-      .collection("users")
+    db.collection("users")
       .doc(currentUser.id)
       .set(
         {
@@ -141,8 +160,8 @@ const DefectForm = () => {
   };
 
   return (
-    <div className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"}>
-      <h1 className={"text-center"}>Raising a new defect</h1>
+    <div className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"} style={{minHeight: "86vh"}}>
+      <h1 className={"text-center"}>Raising a new defect for: {projectName}</h1>
       <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="defectTitle">Title</label>

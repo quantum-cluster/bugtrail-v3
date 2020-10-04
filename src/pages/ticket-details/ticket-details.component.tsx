@@ -16,6 +16,7 @@ const TicketDetailsPage = () => {
   let { ticketId } = useParams<{ ticketId: string }>();
   const currentUser: CurrentUser = useContext(CurrentUserContext);
 
+  const [projectId, setProjectId] = useState("");
   const [usersList, setUsersList] = useState<Array<Assignee>>([]);
   const [assignee, setAssignee] = useState({
     id: "",
@@ -26,6 +27,10 @@ const TicketDetailsPage = () => {
 
   const [ticket, setTicket] = useState<Ticket>({
     id: "",
+    project: {
+      projectId: "",
+      projectName: "",
+    },
     title: "",
     description: "",
     imageUrl: "",
@@ -51,6 +56,7 @@ const TicketDetailsPage = () => {
       .then(function (doc: firestore.DocumentData) {
         if (doc.exists) {
           const {
+            project,
             title,
             description,
             imageUrl,
@@ -62,6 +68,7 @@ const TicketDetailsPage = () => {
           } = doc.data();
           setTicket({
             id: doc.id,
+            project,
             title,
             description,
             imageUrl,
@@ -73,6 +80,7 @@ const TicketDetailsPage = () => {
           });
           setAssignee(assignee);
           setStatus(status);
+          setProjectId(project.projectId);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -86,20 +94,22 @@ const TicketDetailsPage = () => {
       .get()
       .then((querySnapshot: firestore.QuerySnapshot) => {
         querySnapshot.forEach((doc) => {
-          setUsersList((prevState) => [
-            ...prevState,
-            {
-              id: doc.id,
-              displayName: doc.data().displayName,
-              email: doc.data().email,
-            },
-          ]);
+          if (doc.data().projects.includes(projectId)) {
+            setUsersList((prevState) => [
+              ...prevState,
+              {
+                id: doc.id,
+                displayName: doc.data().displayName,
+                email: doc.data().email,
+              },
+            ]);
+          }
         });
       })
       .catch((error: firestore.FirestoreError) => {
         console.error("couldn't fetch the users list: ", error);
       });
-  }, [ticketId]);
+  }, [ticketId, projectId]);
 
   const handleChangeAssignee = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -167,12 +177,16 @@ const TicketDetailsPage = () => {
   };
 
   return (
-    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}>
+    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
       <h2 className={"text-center"}>Ticket Details Page</h2>
       <div className="card border-dark mb-5">
         <ul className="list-group">
           <li className="list-group-item">
             <span className={"badge badge-dark"}>ID</span> {ticketId}
+          </li>
+          <li className="list-group-item">
+            <span className={"badge badge-dark"}>Project Name</span>{" "}
+            {ticket.project.projectName}
           </li>
           <li className="list-group-item">
             <span className={"badge badge-dark"}>Title</span> {ticket.title}
@@ -181,7 +195,15 @@ const TicketDetailsPage = () => {
             <span className={"badge badge-dark"}>Description</span>{" "}
             {ticket.description}
           </li>
+          <li className="list-group-item">
+            <span className={"badge badge-dark"}>Priority</span>{" "}
+            {ticket.priority}
+          </li>
           <li className={"list-group-item"}>
+            <div className={"mb-3"}>
+              <span className={"badge badge-dark"}>Screenshot</span>
+            </div>
+
             <img
               src={ticket.imageUrl}
               alt="defect screenshot"

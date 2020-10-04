@@ -1,5 +1,9 @@
 export interface Ticket {
   id: string;
+  project: {
+    projectId: string;
+    projectName: string;
+  };
   title: string;
   description: string;
   imageUrl: string;

@@ -60,7 +60,7 @@ const Routes = () => {
             />
             <Route
               exact
-              path={"/bugtrail-v3/new-defect"}
+              path={"/bugtrail-v3/new-defect/:projectId"}
               component={DefectForm}
             />
             <Route

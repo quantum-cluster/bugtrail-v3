@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import CurrentUserContext from "../../providers/current-user/current-user.provider";
 import { CurrentUser } from "../../typescript-interfaces/current-user.interface";
@@ -7,12 +7,8 @@ import "./homepage.styles.scss";
 const Homepage = () => {
   const currentUser: CurrentUser = useContext(CurrentUserContext);
 
-  useEffect(() => {
-    console.log("Current User Context: ", currentUser);
-  }, [currentUser]);
-
   return (
-    <div className={"pt-3 pb-3 mt-5"}>
+    <div className={"pt-3 pb-3 mt-5"} style={{minHeight: "86vh"}}>
       {currentUser.email ? (
         <div className="card border-dark m-5">
           <h5 className="card-header text-white bg-dark">User Dashboard</h5>
@@ -37,14 +33,6 @@ const Homepage = () => {
                         to={"/bugtrail-v3/new-project"}
                       >
                         Create A New Project
-                      </Link>
-                    </li>
-                    <li className="list-group-item">
-                      <Link
-                        className={"link-font"}
-                        to={"/bugtrail-v3/new-defect"}
-                      >
-                        Raise A New Defect
                       </Link>
                     </li>
                     <li className="list-group-item">

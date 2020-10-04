@@ -14,6 +14,7 @@ const ViewTickets = () => {
   let query = useQuery();
   let type = query.get("type");
   let projectId = query.get("projectId");
+
   const [ticketsList, setTicketsList] = useState<Array<Ticket>>([]);
 
   const currentUser: CurrentUser = useContext(CurrentUserContext);
@@ -28,6 +29,7 @@ const ViewTickets = () => {
           .then((querySnapshot: firestore.QuerySnapshot) => {
             querySnapshot.forEach((doc) => {
               const {
+                project,
                 title,
                 description,
                 imageUrl,
@@ -39,6 +41,7 @@ const ViewTickets = () => {
               } = doc.data();
               const ticket = {
                 id: doc.id,
+                project,
                 title,
                 description,
                 imageUrl,
@@ -48,7 +51,9 @@ const ViewTickets = () => {
                 assignee,
                 createdAt,
               };
-              setTicketsList((prevState) => [...prevState, ticket]);
+              if (!projectId || project.projectId === projectId) {
+                setTicketsList((prevState) => [...prevState, ticket]);
+              }
             });
           })
           .catch((error: firestore.FirestoreError) => {
@@ -64,6 +69,7 @@ const ViewTickets = () => {
             querySnapshot.forEach((doc) => {
               if (doc.data().owner.id === currentUser.id) {
                 const {
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -75,6 +81,7 @@ const ViewTickets = () => {
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -84,7 +91,9 @@ const ViewTickets = () => {
                   assignee,
                   createdAt,
                 };
-                setTicketsList((prevState) => [...prevState, ticket]);
+                if (!projectId || project.projectId === project) {
+                  setTicketsList((prevState) => [...prevState, ticket]);
+                }
               }
             });
           })
@@ -104,6 +113,7 @@ const ViewTickets = () => {
                 doc.data().assignee.id === currentUser.id
               ) {
                 const {
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -115,6 +125,7 @@ const ViewTickets = () => {
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -124,7 +135,9 @@ const ViewTickets = () => {
                   assignee,
                   createdAt,
                 };
-                setTicketsList((prevState) => [...prevState, ticket]);
+                if (!projectId || project.projectId === project) {
+                  setTicketsList((prevState) => [...prevState, ticket]);
+                }
               }
             });
           })
@@ -141,6 +154,7 @@ const ViewTickets = () => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "unassigned") {
                 const {
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -152,6 +166,7 @@ const ViewTickets = () => {
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -161,7 +176,9 @@ const ViewTickets = () => {
                   assignee,
                   createdAt,
                 };
-                setTicketsList((prevState) => [...prevState, ticket]);
+                if (!projectId || project.projectId === project) {
+                  setTicketsList((prevState) => [...prevState, ticket]);
+                }
               }
             });
           })
@@ -178,6 +195,7 @@ const ViewTickets = () => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "fixed") {
                 const {
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -189,6 +207,7 @@ const ViewTickets = () => {
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -198,7 +217,9 @@ const ViewTickets = () => {
                   assignee,
                   createdAt,
                 };
-                setTicketsList((prevState) => [...prevState, ticket]);
+                if (!projectId || project.projectId === project) {
+                  setTicketsList((prevState) => [...prevState, ticket]);
+                }
               }
             });
           })
@@ -215,6 +236,7 @@ const ViewTickets = () => {
             querySnapshot.forEach((doc) => {
               if (doc.data().status === "failed") {
                 const {
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -226,6 +248,7 @@ const ViewTickets = () => {
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
+                  project,
                   title,
                   description,
                   imageUrl,
@@ -235,7 +258,9 @@ const ViewTickets = () => {
                   assignee,
                   createdAt,
                 };
-                setTicketsList((prevState) => [...prevState, ticket]);
+                if (!projectId || project.projectId === project) {
+                  setTicketsList((prevState) => [...prevState, ticket]);
+                }
               }
             });
           })
@@ -247,10 +272,10 @@ const ViewTickets = () => {
       default:
         break;
     }
-  }, [type, currentUser]);
+  }, [type, currentUser, projectId]);
 
   return (
-    <div className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5">
+    <div className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5" style={{minHeight: "81vh"}}>
       <h2 className={"text-center"}>View Tickets Here</h2>
       {ticketsList.length > 0 ? (
         <table className="table table-bordered table-striped table-dark mb-5">
@@ -258,6 +283,8 @@ const ViewTickets = () => {
             <tr>
               <th scope="col">S.No.</th>
               <th scope="col">Issue Title</th>
+              <th scope="col">Project</th>
+              <th scope="col">Issue Priority</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -273,6 +300,10 @@ const ViewTickets = () => {
                     {ticket.title}
                   </Link>
                 </td>
+                <td>
+                  {ticket.project?.projectName ? ticket.project.projectName : ""}
+                </td>
+                <td>{ticket.priority}</td>
                 <td>{ticket.status}</td>
               </tr>
             ))}
