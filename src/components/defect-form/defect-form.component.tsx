@@ -132,6 +132,14 @@ const DefectForm = () => {
                     displayName: "",
                     email: "",
                   },
+                  logs: [
+                    {
+                      personName: currentUser.displayName,
+                      personRole: currentUser.role,
+                      timestamp: createdAt,
+                      statusChangedTo: "created",
+                    },
+                  ],
                 })
                 .then(() => {
                   console.log("Ticket submitted successfully!");
@@ -160,7 +168,10 @@ const DefectForm = () => {
   };
 
   return (
-    <div className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"} style={{minHeight: "86vh"}}>
+    <div
+      className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"}
+      style={{ minHeight: "86vh" }}
+    >
       <h1 className={"text-center"}>Raising a new defect for: {projectName}</h1>
       <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">

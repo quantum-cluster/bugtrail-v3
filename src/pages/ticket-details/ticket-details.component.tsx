@@ -12,6 +12,13 @@ interface Assignee {
   email: string;
 }
 
+interface Comment {
+  personName: string;
+  personRole: string;
+  timestamp: Date;
+  comment: string;
+}
+
 const TicketDetailsPage = () => {
   let { ticketId } = useParams<{ ticketId: string }>();
   const currentUser: CurrentUser = useContext(CurrentUserContext);
@@ -24,7 +31,7 @@ const TicketDetailsPage = () => {
     email: "",
   });
   const [status, setStatus] = useState("");
-
+  const [comment, setcomment] = useState("");
   const [ticket, setTicket] = useState<Ticket>({
     id: "",
     project: {
@@ -47,6 +54,8 @@ const TicketDetailsPage = () => {
       id: "",
     },
     createdAt: "",
+    logs: [],
+    comments: [],
   });
 
   useEffect(() => {
@@ -65,6 +74,8 @@ const TicketDetailsPage = () => {
             owner,
             assignee,
             createdAt,
+            logs,
+            comments,
           } = doc.data();
           setTicket({
             id: doc.id,
@@ -77,6 +88,8 @@ const TicketDetailsPage = () => {
             owner,
             assignee,
             createdAt: createdAt.toDate().toString(),
+            logs,
+            comments,
           });
           setAssignee(assignee);
           setStatus(status);
@@ -125,24 +138,51 @@ const TicketDetailsPage = () => {
     event.preventDefault();
     const status = assignee ? "assigned" : "unassigned";
 
-    // Add a new document in collection "cities"
+    let logsArray: Array<{
+      personName: string;
+      timestamp: Date;
+      changedStatusTo: string;
+    }> = [];
+
     db.collection("tickets")
       .doc(ticketId)
-      .set(
-        {
-          assignee,
-          status,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        console.log("Document successfully written!");
+      .get()
+      .then((doc: firestore.DocumentData) => {
+        if (doc.exists) {
+          logsArray = doc.data().logs;
+        }
       })
       .then(() => {
-        refreshComponent();
+        db.collection("tickets")
+          .doc(ticketId)
+          .set(
+            {
+              assignee,
+              status,
+              logs: [
+                ...logsArray,
+                {
+                  personName: currentUser.displayName,
+                  personRole: currentUser.role,
+                  timestamp: new Date(),
+                  statusChangedTo: status,
+                },
+              ],
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("Status changed successfully!");
+          })
+          .then(() => {
+            refreshComponent();
+          })
+          .catch((error) => {
+            console.error("Error changing status: ", error);
+          });
       })
       .catch((error) => {
-        console.error("Error writing document: ", error);
+        console.error("Couldn't fetch logs array: ", error);
       });
   };
 
@@ -157,27 +197,108 @@ const TicketDetailsPage = () => {
   const handleSubmitStatus = (event: React.FormEvent) => {
     event.preventDefault();
 
+    let logsArray: Array<{
+      personName: string;
+      timestamp: Date;
+      changedStatusTo: string;
+    }> = [];
+
     db.collection("tickets")
       .doc(ticketId)
-      .set(
-        {
-          status,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        console.log("Status changed successfully!");
+      .get()
+      .then((doc: firestore.DocumentData) => {
+        if (doc.exists) {
+          logsArray = doc.data().logs;
+        }
       })
       .then(() => {
-        refreshComponent();
+        db.collection("tickets")
+          .doc(ticketId)
+          .set(
+            {
+              status,
+              logs: [
+                ...logsArray,
+                {
+                  personName: currentUser.displayName,
+                  personRole: currentUser.role,
+                  timestamp: new Date(),
+                  statusChangedTo: status,
+                },
+              ],
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("Status changed successfully!");
+          })
+          .then(() => {
+            refreshComponent();
+          })
+          .catch((error) => {
+            console.error("Error changing status: ", error);
+          });
       })
       .catch((error) => {
-        console.error("Error changing status: ", error);
+        console.error("Couldn't fetch logs array: ", error);
+      });
+  };
+
+  const handleCommentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setcomment(event.target.value);
+  };
+
+  const handleSubmitComment = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    let commentsArray: Array<Comment> = [];
+
+    db.collection("tickets")
+      .doc(ticketId)
+      .get()
+      .then((doc: firestore.DocumentData) => {
+        if (doc.exists) {
+          commentsArray = doc.data().comments;
+        }
+      })
+      .then(() => {
+        db.collection("tickets")
+          .doc(ticketId)
+          .set(
+            {
+              comments: [
+                ...commentsArray,
+                {
+                  personName: currentUser.displayName,
+                  personRole: currentUser.role,
+                  timestamp: new Date(),
+                  comment,
+                },
+              ],
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("Successfully added the comment.");
+            refreshComponent();
+            setcomment("");
+          })
+          .catch((error) => {
+            console.error("Couldn't add the comment: ", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Couldn't fetch comments array: ", error);
       });
   };
 
   return (
-    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
+    <div
+      className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}
+      style={{ minHeight: "81vh" }}
+    >
       <h2 className={"text-center"}>Ticket Details Page</h2>
       <div className="card border-dark mb-5">
         <ul className="list-group">
@@ -337,6 +458,69 @@ const TicketDetailsPage = () => {
           </li>
         </ul>
       </div>
+      <table className="table table-striped table-bordered table-dark">
+        <thead>
+          <tr>
+            <th scope="col">S.No.</th>
+            <th scope="col">Person</th>
+            <th scope="col">Role</th>
+            <th scope="col">Changed the status to</th>
+            <th scope="col">on Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ticket.logs.map((log, index) => {
+            return (
+              <tr key={index}>
+                <th scope="row">{index + 1}</th>
+                <td>{log.personName}</td>
+                <td>{log.personRole}</td>
+                <td>{log.statusChangedTo}</td>
+                <td>{log.timestamp.toDate().toString()}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      <table className="table table-striped table-bordered table-dark">
+        <thead>
+          <tr>
+            <th scope="col">S.No.</th>
+            <th scope="col">Person</th>
+            <th scope="col">Role</th>
+            <th scope="col">Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ticket.comments.map((comment, index) => {
+            return (
+              <tr key={index}>
+                <th scope="row">{index + 1}</th>
+                <td>{comment.personName}</td>
+                <td>{comment.personRole}</td>
+                <td>{comment.comment}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <form>
+        <div className="form-group">
+          <label htmlFor="comment">Add Comment</label>
+          <textarea
+            className={"form-control"}
+            name="comment"
+            id="comment"
+            value={comment}
+            onChange={handleCommentChange}
+            rows={4}
+          ></textarea>
+        </div>
+        <button className="btn btn-dark" onClick={handleSubmitComment}>
+          Submit Comment
+        </button>
+      </form>
     </div>
   );
 };

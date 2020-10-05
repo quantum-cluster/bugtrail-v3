@@ -1,3 +1,5 @@
+import { firestore } from "firebase";
+
 export interface Ticket {
   id: string;
   project: {
@@ -20,4 +22,16 @@ export interface Ticket {
     id: string;
   };
   createdAt: string;
+  logs: Array<{
+    personName: string;
+    personRole: string;
+    timestamp: firestore.Timestamp;
+    statusChangedTo: string;
+  }>;
+  comments: Array<{
+    personName: string;
+    personRole: string;
+    timestamp: firestore.Timestamp;
+    comment: string;
+  }>;
 }

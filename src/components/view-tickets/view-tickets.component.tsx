@@ -38,6 +38,8 @@ const ViewTickets = () => {
                 owner,
                 assignee,
                 createdAt,
+                logs,
+                comments,
               } = doc.data();
               const ticket = {
                 id: doc.id,
@@ -50,6 +52,8 @@ const ViewTickets = () => {
                 owner,
                 assignee,
                 createdAt,
+                logs,
+                comments,
               };
               if (!projectId || project.projectId === projectId) {
                 setTicketsList((prevState) => [...prevState, ticket]);
@@ -78,6 +82,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
@@ -90,6 +96,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 };
                 if (!projectId || project.projectId === project) {
                   setTicketsList((prevState) => [...prevState, ticket]);
@@ -122,6 +130,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
@@ -134,6 +144,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 };
                 if (!projectId || project.projectId === project) {
                   setTicketsList((prevState) => [...prevState, ticket]);
@@ -163,6 +175,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
@@ -175,6 +189,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 };
                 if (!projectId || project.projectId === project) {
                   setTicketsList((prevState) => [...prevState, ticket]);
@@ -204,6 +220,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
@@ -216,6 +234,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 };
                 if (!projectId || project.projectId === project) {
                   setTicketsList((prevState) => [...prevState, ticket]);
@@ -245,6 +265,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 } = doc.data();
                 const ticket = {
                   id: doc.id,
@@ -257,6 +279,8 @@ const ViewTickets = () => {
                   owner,
                   assignee,
                   createdAt,
+                  logs,
+                  comments,
                 };
                 if (!projectId || project.projectId === project) {
                   setTicketsList((prevState) => [...prevState, ticket]);
@@ -275,7 +299,10 @@ const ViewTickets = () => {
   }, [type, currentUser, projectId]);
 
   return (
-    <div className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5" style={{minHeight: "81vh"}}>
+    <div
+      className="pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"
+      style={{ minHeight: "81vh" }}
+    >
       <h2 className={"text-center"}>View Tickets Here</h2>
       {ticketsList.length > 0 ? (
         <table className="table table-bordered table-striped table-dark mb-5">
@@ -301,7 +328,9 @@ const ViewTickets = () => {
                   </Link>
                 </td>
                 <td>
-                  {ticket.project?.projectName ? ticket.project.projectName : ""}
+                  {ticket.project?.projectName
+                    ? ticket.project.projectName
+                    : ""}
                 </td>
                 <td>{ticket.priority}</td>
                 <td>{ticket.status}</td>
