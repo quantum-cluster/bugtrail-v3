@@ -1,8 +1,9 @@
 import "./project-form.styles.scss";
 import React, { useContext, useState } from "react";
 import { v4 } from "uuid";
-import { firestore } from "../../firebase/firebase.utils";
+import { firestore as db } from "../../firebase/firebase.utils";
 import CurrentUserContext from "../../providers/current-user/current-user.provider";
+import { firestore } from "firebase";
 
 const ProjectForm = () => {
   const [projName, setProjName] = useState("");
@@ -38,35 +39,42 @@ const ProjectForm = () => {
     event.preventDefault();
 
     const projId = v4();
+    let projectArray: Array<string> = [];
 
-    firestore
-      .collection("projects")
+    db.collection("projects")
       .doc(projId)
       .set({
         name: projName,
         description: projDescription,
         status: projStatus,
       })
-      .then(function () {
-        console.log("Document successfully written!");
-      })
       .then(() => {
-        firestore
-          .collection("users")
-          .doc(`${currentUser.id}/createdProjects/${projId}`)
-          .set(
-            {
-              name: projName,
-              description: projDescription,
-              status: projStatus,
-            },
-            { merge: true }
-          )
-          .then(() => {
-            console.log("Document successfully written!");
+        db.collection("users")
+          .doc(currentUser.id)
+          .get()
+          .then((doc: firestore.DocumentData) => {
+            if (doc.exists) {
+              projectArray = doc.data().projects;
+            }
           })
-          .catch((error) => {
-            console.error("Error writing document: ", error);
+          .then(() => {
+            db.collection("users")
+              .doc(currentUser.id)
+              .set(
+                {
+                  projects: [...projectArray, projId],
+                },
+                { merge: true }
+              )
+              .then(() => {
+                console.log("Project created successfully!");
+                setProjName("");
+                setProjDescription("");
+                setProjStatus("");
+              })
+              .catch((error) => {
+                console.error("Error writing document: ", error);
+              });
           });
       })
       .catch(function (error) {
@@ -75,7 +83,10 @@ const ProjectForm = () => {
   };
 
   return (
-    <div className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
+    <div
+      className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}
+      style={{ minHeight: "81vh" }}
+    >
       <h2 className="text-center">CREATE A NEW PROJECT</h2>
       <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">

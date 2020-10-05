@@ -16,6 +16,9 @@ const Projects = () => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
+          console.log("doc.id: ", doc.id);
+          console.log("currentUser.projects: ", currentUser.projects);
+
           if (currentUser.projects.includes(doc.id)) {
             setProjectsList((prevState) => [
               ...prevState,
@@ -32,7 +35,10 @@ const Projects = () => {
   }, [currentUser.projects]);
 
   return (
-    <div className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
+    <div
+      className={"pt-5 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}
+      style={{ minHeight: "81vh" }}
+    >
       <h2 className={"text-center"}>PROJECTS PAGE</h2>
       <table className="table table-bordered table-striped table-dark mb-5">
         <thead>

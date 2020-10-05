@@ -59,7 +59,7 @@ const Homepage = () => {
                         Tickets Assigned To Me
                       </Link>
                     </li>
-                    {currentUser.role === "triage" ? (
+                    {currentUser.role === "Triage" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}
@@ -69,7 +69,7 @@ const Homepage = () => {
                         </Link>
                       </li>
                     ) : null}
-                    {currentUser.role === "triage" ? (
+                    {currentUser.role === "Triage" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}
@@ -79,7 +79,7 @@ const Homepage = () => {
                         </Link>
                       </li>
                     ) : null}
-                    {currentUser.role === "triage" ? (
+                    {currentUser.role === "Triage" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}

@@ -99,28 +99,31 @@ const TicketDetailsPage = () => {
           console.log("No such document!");
         }
       })
+      .then(() => {
+        db.collection("users")
+          .get()
+          .then((querySnapshot: firestore.QuerySnapshot) => {
+            setUsersList([]);
+
+            querySnapshot.forEach((doc) => {
+              if (doc.data().projects.includes(projectId)) {
+                setUsersList((prevState) => [
+                  ...prevState,
+                  {
+                    id: doc.id,
+                    displayName: doc.data().displayName,
+                    email: doc.data().email,
+                  },
+                ]);
+              }
+            });
+          })
+          .catch((error: firestore.FirestoreError) => {
+            console.error("couldn't fetch the users list: ", error);
+          });
+      })
       .catch(function (error: firestore.FirestoreError) {
         console.error("Error getting document:", error);
-      });
-
-    db.collection("users")
-      .get()
-      .then((querySnapshot: firestore.QuerySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          if (doc.data().projects.includes(projectId)) {
-            setUsersList((prevState) => [
-              ...prevState,
-              {
-                id: doc.id,
-                displayName: doc.data().displayName,
-                email: doc.data().email,
-              },
-            ]);
-          }
-        });
-      })
-      .catch((error: firestore.FirestoreError) => {
-        console.error("couldn't fetch the users list: ", error);
       });
   }, [ticketId, projectId]);
 
@@ -342,7 +345,7 @@ const TicketDetailsPage = () => {
           <li className="list-group-item">
             <span className={"badge badge-dark"}>Asignee</span>{" "}
             {ticket.assignee.displayName}
-            {currentUser.role === "triage" ? (
+            {currentUser.role === "Triage" ? (
               <div className={"mt-3"}>
                 <select
                   className="text-center"
@@ -371,7 +374,7 @@ const TicketDetailsPage = () => {
             <span className={"badge badge-dark"}>Status</span> {ticket.status}
             {(function () {
               switch (currentUser.role) {
-                case "tester":
+                case "Tester":
                   return ticket.assignee.displayName ===
                     currentUser.displayName ? (
                     <div className={"mt-3"}>
@@ -397,7 +400,7 @@ const TicketDetailsPage = () => {
                     ""
                   );
 
-                case "triage":
+                case "Triage":
                   return (
                     <div className={"mt-3"}>
                       <select
@@ -424,7 +427,7 @@ const TicketDetailsPage = () => {
                     </div>
                   );
 
-                case "developer":
+                case "Developer":
                   return ticket.assignee.displayName ===
                     currentUser.displayName ? (
                     <div className={"mt-3"}>
@@ -458,6 +461,7 @@ const TicketDetailsPage = () => {
           </li>
         </ul>
       </div>
+      <h4 className={"text-center"}>Ticket change history</h4>
       <table className="table table-striped table-bordered table-dark">
         <thead>
           <tr>
@@ -482,7 +486,7 @@ const TicketDetailsPage = () => {
           })}
         </tbody>
       </table>
-
+      <h4 className={"text-center"}>Ticket comment history</h4>
       <table className="table table-striped table-bordered table-dark">
         <thead>
           <tr>

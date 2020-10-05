@@ -140,6 +140,7 @@ const DefectForm = () => {
                       statusChangedTo: "created",
                     },
                   ],
+                  comments: [],
                 })
                 .then(() => {
                   console.log("Ticket submitted successfully!");
