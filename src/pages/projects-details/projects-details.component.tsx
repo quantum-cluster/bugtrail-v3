@@ -82,6 +82,12 @@ const ProjectDetails = () => {
           });
       })
       .then(() => {
+        setPriorityFeatureRequest(0);
+        setPriorityHigh(0);
+        setPriorityLow(0);
+        setPriorityMedium(0);
+        setPrioritySevere(0);
+
         db.collection("tickets")
           .get()
           .then((querySnapshot) => {

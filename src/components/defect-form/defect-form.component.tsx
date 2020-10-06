@@ -149,6 +149,7 @@ const DefectForm = () => {
                   setTitle("");
                   setDescription("");
                   setPriority("");
+                  setDefectImage(undefined);
                 })
                 .catch(function (error) {
                   console.error("Error creating ticket: ", error);
@@ -156,6 +157,40 @@ const DefectForm = () => {
             });
         }
       );
+    } else {
+      db.collection("tickets")
+        .doc(uid)
+        .set({
+          owner: {
+            id: currentUser.id,
+            displayName: currentUser.displayName,
+            email: currentUser.email,
+          },
+          project: {
+            projectId,
+            projectName,
+          },
+          title,
+          description,
+          imageUrl,
+          priority,
+          createdAt,
+          status: "unassigned",
+          assignee: {
+            id: "",
+            displayName: "",
+            email: "",
+          },
+          logs: [
+            {
+              personName: currentUser.displayName,
+              personRole: currentUser.role,
+              timestamp: createdAt,
+              statusChangedTo: "created",
+            },
+          ],
+          comments: [],
+        });
     }
 
     db.collection("users")
