@@ -16,7 +16,17 @@ const Projects = () => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if (currentUser.projects.includes(doc.id)) {
+          if (currentUser.role === "Admin") {
+            setProjectsList((prevState) => [
+              ...prevState,
+              {
+                id: doc.id,
+                name: doc.data().name,
+                description: doc.data().description,
+                status: doc.data().status,
+              },
+            ]);
+          } else if (currentUser.projects.includes(doc.id)) {
             setProjectsList((prevState) => [
               ...prevState,
               {
@@ -29,7 +39,7 @@ const Projects = () => {
           }
         });
       });
-  }, [currentUser.projects]);
+  }, [currentUser.projects, currentUser.role]);
 
   return (
     <div

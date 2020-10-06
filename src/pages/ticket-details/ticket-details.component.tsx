@@ -347,7 +347,7 @@ const TicketDetailsPage = () => {
           <li className="list-group-item">
             <span className={"badge badge-dark"}>Asignee</span>{" "}
             {ticket.assignee.displayName}
-            {currentUser.role === "Triage" ? (
+            {currentUser.role === "Triage" || currentUser.role === "Admin" ? (
               <div className={"mt-3"}>
                 <select
                   className="text-center"
@@ -419,6 +419,38 @@ const TicketDetailsPage = () => {
                         <option>closed</option>
                         <option>in-testing</option>
                         <option>tested</option>
+                        <option>passed</option>
+                        <option>failed</option>
+                      </select>{" "}
+                      <button
+                        className="btn btn-sm btn-dark"
+                        onClick={handleSubmitStatus}
+                      >
+                        Change Status
+                      </button>
+                    </div>
+                  );
+
+                case "Admin":
+                  return (
+                    <div className={"mt-3"}>
+                      <select
+                        className="text-center"
+                        name={"status"}
+                        id="status"
+                        value={status}
+                        onChange={handleChangeStatus}
+                      >
+                        <option className={""}>--Select--</option>
+                        <option>assigned</option>
+                        <option>duplicate</option>
+                        <option>rejected</option>
+                        <option>closed</option>
+                        <option>in-testing</option>
+                        <option>tested</option>
+                        <option>in-progress</option>
+                        <option>on-hold</option>
+                        <option>fixed</option>
                       </select>{" "}
                       <button
                         className="btn btn-sm btn-dark"
@@ -435,7 +467,7 @@ const TicketDetailsPage = () => {
                     <div className={"mt-3"}>
                       <select
                         className="text-center"
-                        name={"assignee"}
+                        name={"status"}
                         id="exampleFormControlSelect1"
                         value={status}
                         onChange={handleChangeStatus}

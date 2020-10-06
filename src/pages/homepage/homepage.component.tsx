@@ -22,12 +22,13 @@ const Homepage = () => {
                         className={"link-font"}
                         to={"/bugtrail-v3/projects"}
                       >
-                        {currentUser.role === "admin"
+                        {currentUser.role === "Admin"
                           ? "View All Projects"
                           : "View My Projects"}
                       </Link>
                     </li>
-                    <li className="list-group-item">
+                    {currentUser.role === "Admin" ? (
+                      <li className="list-group-item">
                       <Link
                         className={"link-font"}
                         to={"/bugtrail-v3/new-project"}
@@ -35,6 +36,7 @@ const Homepage = () => {
                         Create A New Project
                       </Link>
                     </li>
+                    ) : undefined}
                     <li className="list-group-item">
                       <Link
                         className={"link-font"}
@@ -59,7 +61,7 @@ const Homepage = () => {
                         Tickets Assigned To Me
                       </Link>
                     </li>
-                    {currentUser.role === "Triage" ? (
+                    {currentUser.role === "Triage" || currentUser.role === "Admin" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}
@@ -69,7 +71,7 @@ const Homepage = () => {
                         </Link>
                       </li>
                     ) : null}
-                    {currentUser.role === "Triage" ? (
+                    {currentUser.role === "Triage" || currentUser.role === "Admin" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}
@@ -79,7 +81,7 @@ const Homepage = () => {
                         </Link>
                       </li>
                     ) : null}
-                    {currentUser.role === "Triage" ? (
+                    {currentUser.role === "Triage" || currentUser.role === "Admin" ? (
                       <li className="list-group-item">
                         <Link
                           className={"link-font"}

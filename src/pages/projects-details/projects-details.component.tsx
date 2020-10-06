@@ -1,9 +1,10 @@
 import "./projects-details.styles.scss";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Project } from "../../typescript-interfaces/project.interface";
 import { firestore as db } from "../../firebase/firebase.utils";
 import { Link, useParams } from "react-router-dom";
 import { firestore } from "firebase";
+import CurrentUserContext from "../../providers/current-user/current-user.provider";
 
 interface Member {
   id: string;
@@ -15,6 +16,7 @@ interface Member {
 
 const ProjectDetails = () => {
   const { projectId } = useParams<{ projectId: string }>();
+  const currentUser = useContext(CurrentUserContext);
 
   const [refresh, setRefresh] = useState(false);
   const [project, setProject] = useState<Project>();
@@ -263,7 +265,8 @@ const ProjectDetails = () => {
                       </div>
                     </Link>
                   </li>
-                  <li className="list-group-item">
+                  {currentUser.role === "Admin" ? (
+                    <li className="list-group-item">
                     Add people to the project
                     <form onSubmit={handleAddMember}>
                       <div className={"form-group mt-3"}>
@@ -288,6 +291,7 @@ const ProjectDetails = () => {
                       </button>
                     </form>
                   </li>
+                  ) : undefined}
                 </ul>
               </div>
             </div>
