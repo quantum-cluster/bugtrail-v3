@@ -23,6 +23,7 @@ const TicketDetailsPage = () => {
   let { ticketId } = useParams<{ ticketId: string }>();
   const currentUser: CurrentUser = useContext(CurrentUserContext);
 
+  const [refresh, setRefresh] = useState(true);
   const [projectId, setProjectId] = useState("");
   const [usersList, setUsersList] = useState<Array<Assignee>>([]);
   const [assignee, setAssignee] = useState({
@@ -125,7 +126,7 @@ const TicketDetailsPage = () => {
       .catch(function (error: firestore.FirestoreError) {
         console.error("Error getting document:", error);
       });
-  }, [ticketId, projectId]);
+  }, [ticketId, projectId, refresh]);
 
   const handleChangeAssignee = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -190,7 +191,8 @@ const TicketDetailsPage = () => {
   };
 
   const refreshComponent = () => {
-    window.location.reload();
+    // window.location.reload();
+    setRefresh((prevState) => !prevState);
   };
 
   const handleChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {

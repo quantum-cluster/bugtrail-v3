@@ -15,6 +15,8 @@ interface Member {
 
 const ProjectDetails = () => {
   const { projectId } = useParams<{ projectId: string }>();
+
+  const [refresh, setRefresh] = useState(false);
   const [project, setProject] = useState<Project>();
   const [projectMembers, setProjectMembers] = useState<Array<Member>>([]);
   const [nonMembers, setNonMembers] = useState<Array<Member>>([]);
@@ -44,6 +46,9 @@ const ProjectDetails = () => {
         }
       })
       .then(() => {
+        setProjectMembers([]);
+        setNonMembers([]);
+
         db.collection("users")
           .get()
           .then((querySnapshot) => {
@@ -116,7 +121,7 @@ const ProjectDetails = () => {
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
-  }, [projectId]);
+  }, [projectId, refresh]);
 
   const handleChangePersonToAdd = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -209,7 +214,8 @@ const ProjectDetails = () => {
   };
 
   const refreshComponent = () => {
-    window.location.reload();
+    // window.location.reload();
+    setRefresh((prevState) => !prevState);
   };
 
   return (
