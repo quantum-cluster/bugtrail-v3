@@ -213,7 +213,10 @@ const ProjectDetails = () => {
   };
 
   return (
-    <div className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"} style={{minHeight: "81vh"}}>
+    <div
+      className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}
+      style={{ minHeight: "81vh" }}
+    >
       <h2 className="text-center">Project Details Page</h2>
       <div className="card border-dark mb-3">
         <div className="card-header text-white bg-dark">

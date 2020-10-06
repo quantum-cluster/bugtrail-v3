@@ -21,281 +21,153 @@ const ViewTickets = () => {
 
   useEffect(() => {
     setTicketsList([]);
-    switch (type) {
-      case "all":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              const {
-                project,
-                title,
-                description,
-                imageUrl,
-                priority,
-                status,
-                owner,
-                assignee,
-                createdAt,
-                logs,
-                comments,
-              } = doc.data();
-              const ticket = {
-                id: doc.id,
-                project,
-                title,
-                description,
-                imageUrl,
-                priority,
-                status,
-                owner,
-                assignee,
-                createdAt,
-                logs,
-                comments,
-              };
-              if (!projectId || project.projectId === projectId) {
-                setTicketsList((prevState) => [...prevState, ticket]);
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
 
-      case "my":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().owner.id === currentUser.id) {
-                const {
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                } = doc.data();
-                const ticket = {
-                  id: doc.id,
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                };
-                if (!projectId || project.projectId === project) {
-                  setTicketsList((prevState) => [...prevState, ticket]);
+    let ticketsArray: Array<Ticket> = [];
+
+    db.collection("tickets")
+      .orderBy("createdAt", "desc")
+      .get()
+      .then((querySnapshot: firestore.QuerySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const {
+            project,
+            title,
+            description,
+            imageUrl,
+            priority,
+            status,
+            owner,
+            assignee,
+            createdAt,
+            logs,
+            comments,
+          } = doc.data();
+
+          ticketsArray.push({
+            id: doc.id,
+            project,
+            title,
+            description,
+            imageUrl,
+            priority,
+            status,
+            owner,
+            assignee,
+            createdAt,
+            logs,
+            comments,
+          });
+        });
+      })
+      .then(() => {
+        switch (type) {
+          case "all":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (projectId) {
+                  if (ticket.project.projectId === projectId) {
+                    return ticket;
+                  } else {
+                    return undefined;
+                  }
                 }
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
+                return ticket;
+              })
+            );
+            break;
 
-      case "assigned-to-me":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if (
-                doc.data().status !== "fixed" &&
-                doc.data().assignee.id === currentUser.id
-              ) {
-                const {
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                } = doc.data();
-                const ticket = {
-                  id: doc.id,
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                };
-                if (!projectId || project.projectId === project) {
-                  setTicketsList((prevState) => [...prevState, ticket]);
+          case "my":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (ticket.owner.id === currentUser.id) {
+                  if (projectId) {
+                    if (ticket.project.projectId === projectId) {
+                      return ticket;
+                    }
+                  } else {
+                    return ticket;
+                  }
                 }
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
+                return undefined;
+              })
+            );
+            break;
 
-      case "unassigned":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().status === "unassigned") {
-                const {
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                } = doc.data();
-                const ticket = {
-                  id: doc.id,
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                };
-                if (!projectId || project.projectId === project) {
-                  setTicketsList((prevState) => [...prevState, ticket]);
+          case "assigned-to-me":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (ticket.assignee.id === currentUser.id) {
+                  if (projectId) {
+                    if (ticket.project.projectId === projectId) {
+                      return ticket;
+                    }
+                  } else {
+                    return ticket;
+                  }
                 }
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
+                return undefined;
+              })
+            );
+            break;
 
-      case "fixed":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().status === "fixed") {
-                const {
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                } = doc.data();
-                const ticket = {
-                  id: doc.id,
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                };
-                if (!projectId || project.projectId === project) {
-                  setTicketsList((prevState) => [...prevState, ticket]);
+          case "unassigned":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (ticket.status === "unassigned") {
+                  if (projectId) {
+                    if (ticket.project.projectId === projectId) {
+                      return ticket;
+                    }
+                  } else {
+                    return ticket;
+                  }
                 }
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
+                return undefined;
+              })
+            );
+            break;
 
-      case "failed":
-        db.collection("tickets")
-          .orderBy("createdAt", "desc")
-          .get()
-          .then((querySnapshot: firestore.QuerySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              if (doc.data().status === "failed") {
-                const {
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                } = doc.data();
-                const ticket = {
-                  id: doc.id,
-                  project,
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  status,
-                  owner,
-                  assignee,
-                  createdAt,
-                  logs,
-                  comments,
-                };
-                if (!projectId || project.projectId === project) {
-                  setTicketsList((prevState) => [...prevState, ticket]);
+          case "fixed":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (ticket.status === "fixed") {
+                  if (projectId) {
+                    if (ticket.project.projectId === projectId) {
+                      return ticket;
+                    }
+                  } else {
+                    return ticket;
+                  }
                 }
-              }
-            });
-          })
-          .catch((error: firestore.FirestoreError) => {
-            console.error("Error getting document:", error);
-          });
-        break;
+                return undefined;
+              })
+            );
+            break;
 
-      default:
-        break;
-    }
+          case "failed":
+            setTicketsList(
+              ticketsArray.filter((ticket) => {
+                if (ticket.status === "failed") {
+                  if (projectId) {
+                    if (ticket.project.projectId === projectId) {
+                      return ticket;
+                    }
+                  } else {
+                    return ticket;
+                  }
+                }
+                return undefined;
+              })
+            );
+            break;
+
+          default:
+            break;
+        }
+      })
+      .catch((error) => {
+        console.error("Couldn't fetch tickets: ", error);
+      });
   }, [type, currentUser, projectId]);
 
   return (

@@ -1,0 +1,275 @@
+    // switch (type) {
+    //   case "all":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           const {
+    //             project,
+    //             title,
+    //             description,
+    //             imageUrl,
+    //             priority,
+    //             status,
+    //             owner,
+    //             assignee,
+    //             createdAt,
+    //             logs,
+    //             comments,
+    //           } = doc.data();
+    //           const ticket = {
+    //             id: doc.id,
+    //             project,
+    //             title,
+    //             description,
+    //             imageUrl,
+    //             priority,
+    //             status,
+    //             owner,
+    //             assignee,
+    //             createdAt,
+    //             logs,
+    //             comments,
+    //           };
+    //           if (!projectId || project.projectId === projectId) {
+    //             setTicketsList((prevState) => [...prevState, ticket]);
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   case "my":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           if (doc.data().owner.id === currentUser.id) {
+    //             const {
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             } = doc.data();
+    //             const ticket = {
+    //               id: doc.id,
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             };
+    //             if (!projectId || project.projectId === project) {
+    //               setTicketsList((prevState) => [...prevState, ticket]);
+    //             }
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   case "assigned-to-me":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           if (
+    //             doc.data().status !== "fixed" &&
+    //             doc.data().assignee.id === currentUser.id
+    //           ) {
+    //             const {
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             } = doc.data();
+    //             const ticket = {
+    //               id: doc.id,
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             };
+    //             if (!projectId || project.projectId === project) {
+    //               setTicketsList((prevState) => [...prevState, ticket]);
+    //             }
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   case "unassigned":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           if (doc.data().status === "unassigned") {
+    //             const {
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             } = doc.data();
+    //             const ticket = {
+    //               id: doc.id,
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             };
+    //             if (!projectId || project.projectId === project) {
+    //               setTicketsList((prevState) => [...prevState, ticket]);
+    //             }
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   case "fixed":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           if (doc.data().status === "fixed") {
+    //             const {
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             } = doc.data();
+    //             const ticket = {
+    //               id: doc.id,
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             };
+    //             if (!projectId || project.projectId === project) {
+    //               setTicketsList((prevState) => [...prevState, ticket]);
+    //             }
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   case "failed":
+    //     db.collection("tickets")
+    //       .orderBy("createdAt", "desc")
+    //       .get()
+    //       .then((querySnapshot: firestore.QuerySnapshot) => {
+    //         querySnapshot.forEach((doc) => {
+    //           if (doc.data().status === "failed") {
+    //             const {
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             } = doc.data();
+    //             const ticket = {
+    //               id: doc.id,
+    //               project,
+    //               title,
+    //               description,
+    //               imageUrl,
+    //               priority,
+    //               status,
+    //               owner,
+    //               assignee,
+    //               createdAt,
+    //               logs,
+    //               comments,
+    //             };
+    //             if (!projectId || project.projectId === project) {
+    //               setTicketsList((prevState) => [...prevState, ticket]);
+    //             }
+    //           }
+    //         });
+    //       })
+    //       .catch((error: firestore.FirestoreError) => {
+    //         console.error("Error getting document:", error);
+    //       });
+    //     break;
+
+    //   default:
+    //     break;
+    // }

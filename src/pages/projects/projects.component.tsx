@@ -16,9 +16,6 @@ const Projects = () => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log("doc.id: ", doc.id);
-          console.log("currentUser.projects: ", currentUser.projects);
-
           if (currentUser.projects.includes(doc.id)) {
             setProjectsList((prevState) => [
               ...prevState,
