@@ -4,15 +4,21 @@
 
 ## Project Screenshots:-
 
-![Resister and Login Page](images/bugtrail-v3-register-login-page.png)
+![Resister and Login Page](images/bugtrail-v3-register-and-login.png)
 
-![User Dashboard](images/bugtrail-v3-dashboard.png)
+![User Dashboard](images/bugtrail-v3-triage-dashboard.png)
+
+![New Project Form](images/bugtrail-v3-new-project-form.png)
+
+![Projects List Page](images/bugtrail-v3-projects-list.png)
+
+![Projects Details Page](images/bugtrail-v3-project-details-page.png)
 
 ![Defect Form](images/bugtrail-v3-defect-form.png)
 
-![Tickets Page](images/bugtrail-v3-tickets-page.png)
+![Tickets Page](images/bugtrail-v3-all-tickets.png)
 
-![Ticket Details Page](images/bugtrail-v3-ticket-details-page.png)
+![Ticket Details Page](images/bugtrail-v3-ticket-details.png)
 
 ### Usage Instructions:-
 

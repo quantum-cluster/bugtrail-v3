@@ -14,8 +14,8 @@ const Homepage = () => {
           <h5 className="card-header text-white bg-dark">User Dashboard</h5>
           <div className="card-body">
             <div className="row">
-              <div className="col-md-3 mb-5">
-                <div className="card border-dark">
+              <div className="col-md-3 col-sm-12">
+                <div className="card border-dark mb-3">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                       <Link
@@ -93,7 +93,7 @@ const Homepage = () => {
                 </div>
               </div>
 
-              <div className="col-md-9 mb-5">
+              <div className="col-md-9 col-sm-12">
                 <div className="card border-dark">
                   <h5 className="card-header text-white bg-dark">
                     {currentUser.displayName}
