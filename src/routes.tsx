@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import DefectForm from "./components/defect-form/defect-form.component";
+import EditDefect from "./components/edit-defect/edit-defect.component";
 import Footer from "./components/footer/footer.component";
 import Navbar from "./components/navbar/navbar.component";
 import ViewTickets from "./components/view-tickets/view-tickets.component";
@@ -79,6 +80,11 @@ const Routes = () => {
               exact
               path={"/bugtrail-v3/project-details/:projectId"}
               component={ProjectDetails}
+            />
+            <Route
+              exact
+              path={"/bugtrail-v3/edit-defect/:defectId"}
+              component={EditDefect}
             />
           </Switch>
         </BrowserRouter>

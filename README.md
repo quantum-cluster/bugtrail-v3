@@ -22,6 +22,11 @@
 
 ### Usage Instructions:-
 
+Create an app on firebase by clicking [here](https://firebase.google.com/)
+now after you receive your project's configuration, replace it with the one present in this project.
+You'll find it at src/firebase/firebase.utils.ts
+Once done, you'll just need to run a few commands.
+
 #### run the following commands:-
 
 yarn (this will create your node_modules folder and install all the project related dependencies)

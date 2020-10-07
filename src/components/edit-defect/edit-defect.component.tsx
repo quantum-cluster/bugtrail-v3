@@ -1,34 +1,42 @@
 import React, { useContext, useEffect, useState } from "react";
 import CurrentUserContext from "../../providers/current-user/current-user.provider";
 import { CurrentUser } from "../../typescript-interfaces/current-user.interface";
-import { v4 } from "uuid";
 import { firestore as db, storage } from "../../firebase/firebase.utils";
 import firebase, { firestore } from "firebase/app";
-import "./defect-form.styles.scss";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
-const DefectForm = () => {
+interface Log {
+  personName: string;
+  personRole: string;
+  timestamp: firestore.Timestamp;
+  statusChangedTo: string;
+}
+
+const EditDefect = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [defectImage, setDefectImage] = useState<File>();
   const [priority, setPriority] = useState("");
-  const [projectName, setProjectName] = useState("");
 
-  const { projectId } = useParams<{ projectId: string }>();
+  const { defectId } = useParams<{ defectId: string }>();
+  const history = useHistory();
 
-  const currentUser: CurrentUser = useContext(CurrentUserContext);
+  let currentUser: CurrentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
-    db.collection("projects")
-      .doc(projectId)
+    db.collection("tickets")
+      .doc(defectId)
       .get()
       .then((doc: firestore.DocumentData) => {
-        setProjectName(doc.data().name);
+        const { title, description, priority } = doc.data();
+        setTitle(title);
+        setDescription(description);
+        setPriority(priority);
       })
       .catch((error) => {
-        console.error("Couldn't fetch project name: ", error);
+        console.error("Coudn't pre-populate the fields: ", error);
       });
-  }, [projectId]);
+  }, [defectId]);
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -68,9 +76,9 @@ const DefectForm = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const uid = v4();
-    const createdAt = new Date();
+    const updatedAt = new Date();
     let imageUrl = "";
+    let logsArr: Array<Log> = [];
 
     if (defectImage) {
       var storageRef = storage.ref();
@@ -80,7 +88,7 @@ const DefectForm = () => {
       };
 
       var uploadTask = storageRef
-        .child("images/" + uid)
+        .child("images/" + defectId)
         .put(defectImage, metadata);
 
       uploadTask.on(
@@ -110,40 +118,47 @@ const DefectForm = () => {
             })
             .then(() => {
               db.collection("tickets")
-                .doc(uid)
-                .set({
-                  owner: {
-                    id: currentUser.id,
-                    displayName: currentUser.displayName,
-                    email: currentUser.email,
-                  },
-                  project: {
-                    projectId,
-                    projectName,
-                  },
-                  title,
-                  description,
-                  imageUrl,
-                  priority,
-                  createdAt,
-                  status: "unassigned",
-                  assignee: {
-                    id: "",
-                    displayName: "",
-                    email: "",
-                  },
-                  logs: [
-                    {
-                      personName: currentUser.displayName,
-                      personRole: currentUser.role,
-                      timestamp: createdAt,
-                      statusChangedTo: "created",
-                    },
-                  ],
-                  comments: [],
+                .doc(defectId)
+                .get()
+                .then((doc: firestore.DocumentData) => {
+                  if (doc.exists) {
+                    logsArr = doc.data().logs;
+                  }
                 })
+                .catch((error) => {
+                  console.error("Couldnt' populate logs array: ", error);
+                });
+            })
+            .then(() => {
+              db.collection("tickets")
+                .doc(defectId)
+                .set(
+                  {
+                    lastEditedBy: {
+                      id: currentUser.id,
+                      displayName: currentUser.displayName,
+                      email: currentUser.email,
+                    },
+                    title,
+                    description,
+                    imageUrl,
+                    priority,
+                    updatedAt,
+                    status: "updated",
+                    logs: [
+                      ...logsArr,
+                      {
+                        personName: currentUser.displayName,
+                        personRole: currentUser.role,
+                        timestamp: updatedAt,
+                        statusChangedTo: "updated",
+                      },
+                    ],
+                  },
+                  { merge: true }
+                )
                 .then(() => {
-                  console.log("Ticket submitted successfully!");
+                  console.log("Ticket updated successfully!");
                 })
                 .then(() => {
                   setTitle("");
@@ -154,65 +169,71 @@ const DefectForm = () => {
                 .catch(function (error) {
                   console.error("Error creating ticket: ", error);
                 });
+            })
+            .catch((error) => {
+              console.error("Something went wrong: ", error);
+            })
+            .finally(() => {
+              history.push(`/bugtrail-v3/ticket-details/${defectId}`);
             });
         }
       );
     } else {
       db.collection("tickets")
-        .doc(uid)
-        .set({
-          owner: {
-            id: currentUser.id,
-            displayName: currentUser.displayName,
-            email: currentUser.email,
-          },
-          project: {
-            projectId,
-            projectName,
-          },
-          title,
-          description,
-          imageUrl,
-          priority,
-          createdAt,
-          status: "unassigned",
-          assignee: {
-            id: "",
-            displayName: "",
-            email: "",
-          },
-          logs: [
-            {
-              personName: currentUser.displayName,
-              personRole: currentUser.role,
-              timestamp: createdAt,
-              statusChangedTo: "created",
-            },
-          ],
-          comments: [],
+        .doc(defectId)
+        .get()
+        .then((doc: firestore.DocumentData) => {
+          if (doc.exists) {
+            logsArr = doc.data().logs;
+          }
         })
         .then(() => {
-          console.log("Ticket submitted successfully!");
+          db.collection("tickets")
+            .doc(defectId)
+            .set(
+              {
+                lastEditedBy: {
+                  id: currentUser.id,
+                  displayName: currentUser.displayName,
+                  email: currentUser.email,
+                },
+                title,
+                description,
+                priority,
+                updatedAt,
+                status: "updated",
+                logs: [
+                  ...logsArr,
+                  {
+                    personName: currentUser.displayName,
+                    personRole: currentUser.role,
+                    timestamp: updatedAt,
+                    statusChangedTo: "updated",
+                  },
+                ],
+              },
+              { merge: true }
+            )
+            .then(() => {
+              console.log("Ticket updated successfully!");
+            })
+            .then(() => {
+              setTitle("");
+              setDescription("");
+              setPriority("");
+              setDefectImage(undefined);
+            })
+            .catch(function (error) {
+              console.error("Error creating ticket: ", error);
+            });
         })
-        .then(() => {
-          setTitle("");
-          setDescription("");
-          setPriority("");
-          setDefectImage(undefined);
+        .catch((error) => {
+          console.error("Couldnt' populate logs array: ", error);
         })
-        .catch(function (error) {
-          console.error("Error creating ticket: ", error);
+        .finally(() => {
+          history.push(`/bugtrail-v3/ticket-details/${defectId}`);
         });
     }
-
-    db.collection("users")
-      .doc(currentUser.id)
-      .set(
-        {
-          myTickets: [...currentUser.myTickets, uid],
-        },
-        { merge: true }
-      );
   };
 
   return (
@@ -220,7 +241,7 @@ const DefectForm = () => {
       className={"pt-3 pl-2 pr-2 mt-5 mr-3 ml-3"}
       style={{ minHeight: "86vh" }}
     >
-      <h1 className={"text-center"}>Raising a new defect for: {projectName}</h1>
+      <h1 className={"text-center"}>Updating existing defect</h1>
       <form className={"mb-5"} onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="defectTitle">Title</label>
@@ -281,4 +302,4 @@ const DefectForm = () => {
   );
 };
 
-export default DefectForm;
+export default EditDefect;

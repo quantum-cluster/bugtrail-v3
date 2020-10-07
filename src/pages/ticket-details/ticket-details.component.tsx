@@ -1,7 +1,7 @@
 import { firestore } from "firebase";
 import { firestore as db } from "../../firebase/firebase.utils";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Ticket } from "../../typescript-interfaces/ticket.interface";
 import CurrentUserContext from "../../providers/current-user/current-user.provider";
 import { CurrentUser } from "../../typescript-interfaces/current-user.interface";
@@ -191,7 +191,6 @@ const TicketDetailsPage = () => {
   };
 
   const refreshComponent = () => {
-    // window.location.reload();
     setRefresh((prevState) => !prevState);
   };
 
@@ -287,11 +286,13 @@ const TicketDetailsPage = () => {
           )
           .then(() => {
             console.log("Successfully added the comment.");
-            refreshComponent();
             setcomment("");
           })
           .catch((error) => {
             console.error("Couldn't add the comment: ", error);
+          })
+          .finally(() => {
+            refreshComponent();
           });
       })
       .catch((error) => {
@@ -304,7 +305,12 @@ const TicketDetailsPage = () => {
       className={"pt-3 pb-3 pl-2 pr-2 mt-5 mr-3 ml-3 mb-5"}
       style={{ minHeight: "81vh" }}
     >
-      <h2 className={"text-center"}>Ticket Details Page</h2>
+      <h2 className={"text-center"}>
+        Ticket Details Page{" "}
+        <Link to={`/bugtrail-v3/edit-defect/${ticket.id}`}>
+          <button className="btn btn-warning border-dark">Edit Ticket</button>
+        </Link>
+      </h2>
       <div className="card border-dark mb-5">
         <ul className="list-group">
           <li className="list-group-item">
@@ -543,21 +549,19 @@ const TicketDetailsPage = () => {
           })}
         </tbody>
       </table>
-      <form>
+      <form onSubmit={handleSubmitComment}>
         <div className="form-group">
-          <label htmlFor="comment">Add Comment</label>
+          <label htmlFor="ticketComment">Add Comment</label>
           <textarea
             className={"form-control"}
-            name="comment"
-            id="comment"
+            id="ticketComment"
+            placeholder={"Enter your comment here..."}
+            rows={3}
             value={comment}
             onChange={handleCommentChange}
-            rows={4}
-          ></textarea>
+          />
         </div>
-        <button className="btn btn-dark" onClick={handleSubmitComment}>
-          Submit Comment
-        </button>
+        <button className="btn btn-dark">Submit Comment</button>
       </form>
     </div>
   );
