@@ -307,9 +307,11 @@ const TicketDetailsPage = () => {
     >
       <h2 className={"text-center"}>
         Ticket Details Page{" "}
-        <Link to={`/bugtrail-v3/edit-defect/${ticket.id}`}>
-          <button className="btn btn-warning border-dark">Edit Ticket</button>
-        </Link>
+        {currentUser.id === ticket.owner.id ? (
+          <Link to={`/bugtrail-v3/edit-defect/${ticket.id}`}>
+            <button className="btn btn-warning border-dark">Edit Ticket</button>
+          </Link>
+        ) : undefined}
       </h2>
       <div className="card border-dark mb-5">
         <ul className="list-group">
