@@ -18,14 +18,8 @@ const Register = () => {
     confirmPassword: "12345678",
   });
 
-  const {
-    fName,
-    lName,
-    role,
-    email,
-    password,
-    confirmPassword,
-  } = userCredentials;
+  const { fName, lName, role, email, password, confirmPassword } =
+    userCredentials;
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
