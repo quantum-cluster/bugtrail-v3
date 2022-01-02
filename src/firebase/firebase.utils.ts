@@ -37,8 +37,8 @@ export const createUserProfileDocument = async (
         myTickets: [""],
         ...additionalData,
       });
-    } catch (error) {
-      console.log("error creating user", error.message);
+    } catch (error: any) {
+      console.log("error creating user", error);
     }
   }
 
