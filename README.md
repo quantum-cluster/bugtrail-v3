@@ -1,4 +1,4 @@
-# Bugtrail - A Bug Tracking System (2021)
+# Bugtrail - A Bug Tracking System (2021) - No longer Managed
 
 ## A bug tracking system built using React for the front end and Firebase for the backend
 
